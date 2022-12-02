@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      div {
+        height: 100px;
+        width: 100px;
+        border-radius: 100%;
+        background-color: darkgray;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="screen"></div>
+  </body>
+  <script>
+    //Model
+    let traficLights = [
+      { color: "red", active: true },
+      { color: "yellow", active: false },
+      { color: "green", active: false },
+    ];
+    //View
+    let diplay = document.getElementById("screen");
+    view();
+    function view() {
+      let html = "";
+      for (let i = 0; i < traficLights.length; i++) {
+        html += createLights(i);
+      }
+      diplay.innerHTML = html;
+    }
+
+    function createLights(i) {
+      const light = traficLights[i];
+      if (!light.active)
+        return `
+        <div></div>
+        `;
+      return `
+        <div style="background-color: ${light.color}"></div>
+        `;
+    }
+
+    //Controller
+    sequence1();
+    function sequence1() {
+      turnOffYellow();
+      turnOnRed();
+      const mySequence1 = setTimeout(sequence2, 5000);
+    }
+    function sequence2() {
+      turnOnYellow();
+      const mySequence2 = setTimeout(sequence3, 2000);
+    }
+    function sequence3() {
+      turnOffRed();
+      turnOffYellow();
+      turnOnGreen();
+      const mySequence3 = setInterval(sequence4, 10000);
+    }
+    function sequence4() {
+      turnOfGreen();
+      turnOnYellow();
+      const mySequence4 = setTimeout(sequence1, 3000);
+    }
+    function turnOnRed() {
+      turnOn(0);
+    }
+    function turnOffRed() {
+      turnOff(0);
+    }
+    function turnOnYellow() {
+      turnOn(1);
+    }
+    function turnOffYellow() {
+      turnOff(1);
+    }
+    function turnOnGreen() {
+      turnOn(2);
+    }
+    function turnOfGreen() {
+      turnOff(2);
+    }
+    function turnOn(index) {
+      traficLights[index].active = true;
+      view();
+    }
+
+    function turnOff(index) {
+      traficLights[index].active = false;
+      view();
+    }
+  </script>
+</html>
